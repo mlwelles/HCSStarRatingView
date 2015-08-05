@@ -322,7 +322,7 @@
 #pragma mark - First responder
 
 - (BOOL)canBecomeFirstResponder {
-   return self.allowsUserChanges
+    return self.allowsUserChanges;
 }
 
 #pragma mark - Intrinsic Content Size
