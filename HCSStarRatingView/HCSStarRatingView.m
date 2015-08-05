@@ -275,6 +275,9 @@
 #pragma mark - Touches
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    if (!self.allowsUserChanges) {
+        return NO;
+    }
     [super beginTrackingWithTouch:touch withEvent:event];
     if (![self isFirstResponder]) {
         [self becomeFirstResponder];
@@ -284,12 +287,18 @@
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    if (!self.allowsUserChanges) {
+        return NO;
+    }
     [super continueTrackingWithTouch:touch withEvent:event];
     [self _handleTouch:touch];
     return YES;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    if (!self.allowsUserChanges) {
+        return;
+    }
     [super endTrackingWithTouch:touch withEvent:event];
     if ([self isFirstResponder]) {
         [self resignFirstResponder];
@@ -298,6 +307,9 @@
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
+    if (!self.allowsUserChanges) {
+        return;
+    }
     [super cancelTrackingWithEvent:event];
     if ([self isFirstResponder]) {
         [self resignFirstResponder];
@@ -305,6 +317,10 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (! self.allowsUserChanges) {
+        return NO;
+    }
+
     return !self.isUserInteractionEnabled;
 }
 
