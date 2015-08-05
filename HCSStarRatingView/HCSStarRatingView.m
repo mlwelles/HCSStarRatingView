@@ -61,6 +61,7 @@
     _maximumValue = 5;
     _value = 0;
     _spacing = 5.f;
+    _allowsUserChanges = NO;
 }
 
 - (void)setNeedsLayout {
@@ -321,7 +322,7 @@
 #pragma mark - First responder
 
 - (BOOL)canBecomeFirstResponder {
-    return YES;
+   return self.allowsUserChanges
 }
 
 #pragma mark - Intrinsic Content Size
