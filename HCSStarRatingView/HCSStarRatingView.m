@@ -249,7 +249,14 @@
         CGRect frame = CGRectMake(center.x - starSide/2, center.y - starSide/2, starSide, starSide);
         BOOL highlighted = (idx+1 <= ceilf(_value));
         if (_allowsHalfStars && highlighted && (idx+1 > _value)) {
-            [self _drawHalfStarWithFrame:frame tintColor:self.tintColor];
+            CGFloat remainder = _value - idx;
+            if (remainder < .25) {
+                [self _drawStarWithFrame:frame tintColor:self.tintColor highlighted:NO];
+            } else if (remainder >= .25 && remainder < .75) {
+                [self _drawHalfStarWithFrame:frame tintColor:self.tintColor];
+            } else if (remainder >= .75 ) {
+                [self _drawStarWithFrame:frame tintColor:self.tintColor highlighted:YES];
+            }
         } else {
             [self _drawStarWithFrame:frame tintColor:self.tintColor highlighted:highlighted];
         }
@@ -317,10 +324,9 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if (! self.allowsUserChanges) {
+    if (!self.allowsUserChanges) {
         return NO;
     }
-
     return !self.isUserInteractionEnabled;
 }
 
